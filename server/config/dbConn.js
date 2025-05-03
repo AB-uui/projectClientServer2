@@ -6,11 +6,11 @@ const connectDB = async ()=>{
    // לבדוק אם להוריד את השורה הזו
     mongoose.set('debug', true)
     
-    if (!process.env.DATABASE_URI_H) {
-        throw new Error('DATABASE_URI_H is not defined in the environment');
+    if (!process.env.DB_MONGODB_URI) {
+        throw new Error('DB_MONGODB_URI is not defined in the environment');
       }      
     try{
-        await mongoose.connect(process.env.DATABASE_URI_H)
+        await mongoose.connect(process.env.DB_MONGODB_URI)
     }
     catch (err){
         console.error(`error connect to db ${err}`);

@@ -10,7 +10,7 @@ const topicSchema = new mongoose.Schema({
  isDefault: {
     type: Boolean,
     default: false
-  }
+  },
   description: {
     type:String,
     required:true,
@@ -33,7 +33,7 @@ const topicSchema = new mongoose.Schema({
     type:String,
     default:""//default.png
  },
-}
+},
 {
     timestamps:true
 });

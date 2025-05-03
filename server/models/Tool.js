@@ -1,3 +1,5 @@
+const mongoose = require('mongoose');
+
 const toolSchema = new mongoose.Schema({
     name: { 
         type: String,
@@ -47,5 +49,5 @@ const toolSchema = new mongoose.Schema({
     }
 });
   
-  module.exports = mongoose.model('Tool', toolSchema);
+module.exports = mongoose.model('Tool', toolSchema);
   

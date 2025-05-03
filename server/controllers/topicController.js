@@ -1,16 +1,13 @@
 const Topic = require('../models/topic');
 const Tool = require('../models/Tool');
+const getPagination = require('../utils/pagination');
 
 // GET all topics
 exports.getAllTopics = async (req, res) => {
   try {
-    const maxLimit = 6;
-    const totalPosts = await Topic.countDocuments();    
-    const limit = Math.min(Math.max(parseInt(req.query.limit) || 6, 1), maxLimit, totalPosts);
-    const totalPages = Math.ceil(totalPosts / limit);
-    const page = Math.min(Math.max(parseInt(req.query.page) || 0, 0), totalPages - 1);
-    const skip = page * limit;
-    const topics = await Post.find()
+    const maxLimit = 12;
+    const { limit, skip, page, totalPages, totalCount } = getPagination(req, Post, maxLimit);
+    const topics = await Topic.find()
       .sort({ createdAt: -1 })  // מהחדש לישן
       .skip(skip) // דילוג על מספר הפוסטים בדף הנוכחי
       .limit(limit) // הגבלת מספר הפוסטים בדף הנוכחי
@@ -18,7 +15,13 @@ exports.getAllTopics = async (req, res) => {
     if (!topics.length) {
         return res.status(400).send("no posts found");
     }
-    res.status(200).json(topics);
+    res.status(200).json({
+      page,
+      totalPages,
+      count: topics.length,
+      totalCount,
+      topics 
+    });
   } catch (error) {
     console.error('Error fetching topics:', error);
     res.status(500).json({ message: 'Server error' });
@@ -36,12 +39,8 @@ exports.getTopicWithTools = async (req, res) => {
       return res.status(404).json({ message: 'Topic not found' });
     }
     const maxLimit = 12;
-    const totalPosts = await Post.countDocuments();
     
-    const limit = Math.min(Math.max(parseInt(req.query.limit) || 6, 1), maxLimit, totalPosts);
-    const totalPages = Math.ceil(totalPosts / limit);
-    const page = Math.min(Math.max(parseInt(req.query.page) || 0, 0), totalPages - 1);
-    const skip = page * limit;
+    const { limit, skip, page, totalPages,totalCount } = getPagination(req, Post, maxLimit);
     // הבא את הכלים הקשורים לנושא
     const tools = await Tool.find({ topic: topicId })
     .sort({ createdAt: -1 })  // מהחדש לישן
@@ -53,7 +52,7 @@ exports.getTopicWithTools = async (req, res) => {
         return res.status(404).json({ message: 'tools for this topic not found' });
       }
     // החזר את שניהם
-    res.status(200).json({ topic, tools });
+    res.status(200).json({ topic, tools , page, totalPages, count: tools.length, totalCount });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

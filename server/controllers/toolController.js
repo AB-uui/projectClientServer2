@@ -1,14 +1,12 @@
-const Tool = require('../models/tool');
+const Tool = require('../models/Tool');
+const getPagination = require('../utils/pagination');
 
 exports.getAllTools = async (req, res) => {
   try {
     const maxLimit = 6;
-    const totalPosts = await Tool.countDocuments();    
-    const limit = Math.min(Math.max(parseInt(req.query.limit) || 6, 1), maxLimit, totalPosts);
-    const totalPages = Math.ceil(totalPosts / limit);
-    const page = Math.min(Math.max(parseInt(req.query.page) || 0, 0), totalPages - 1);
-    const skip = page * limit;
-    const tools = await Tool.find().populate('topic'); 
+    const { limit, skip, page, totalPages, totalCount } = getPagination(req, Tool, maxLimit);
+    
+    const tools = await Tool.find().populate('topic') 
       .sort({ createdAt: -1 })  // מהחדש לישן
       .skip(skip) // דילוג על מספר הפוסטים בדף הנוכחי
       .limit(limit) // הגבלת מספר הפוסטים בדף הנוכחי
@@ -16,7 +14,7 @@ exports.getAllTools = async (req, res) => {
     if (!tools.length) {
         return res.status(400).send("no posts found");
     } 
-    res.status(200).json(tools);
+    res.status(200).json({tools, page, totalPages, count: tools.length, totalCount });
   } catch (error) {
     console.error('Error fetching tools:', error);
     res.status(500).json({ message: 'Server error' });
