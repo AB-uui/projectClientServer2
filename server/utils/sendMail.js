@@ -50,7 +50,7 @@ const sendMail = async (to, subject, text) => {
         clientId: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
         refreshToken: process.env.GOOGLE_REFRESH_TOKEN,
-        accessToken: 'ya29.a0AZYkNZirfeZ0ZLiwFm_md96C7KzP2TEl5-SikDqctQVAzDnny-fmtssrn7JrtMT3rrKccEbdwDQYo-XCo8ZtEkLPmKWzG7cS2_wOtt_zvhyQlhUZvMoCy9Qov0Ju7ECjDqsPhBFbgyVQFDB5jrGo6F4OZvrDkjovQnBZ29WgYwaCgYKAVYSARESFQHGX2MilIYSIgFwyuMSACh_AQOU2w0177',//accessToken.token,
+        accessToken: accessToken.token,
       },
     });
 
