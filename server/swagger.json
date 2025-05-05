@@ -1,0 +1,1155 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API Documentation",
+    "version": "1.0.0",
+    "description": "API documentation for the server"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:5000",
+      "description": "Development server"
+    }
+  ],
+  "paths": {
+    "/api/auth/register": {
+      "post": {
+        "summary": "Register a new user",
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "userName": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "phone": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Activation code sent to email"
+          },
+          "400": {
+            "description": "Missing fields"
+          },
+          "409": {
+            "description": "Username or email already exists"
+          }
+        }
+      }
+    },
+    "/api/auth/verify-register": {
+      "post": {
+        "summary": "Verify user registration",
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "userName": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "phone": {
+                    "type": "string"
+                  },
+                  "code": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User registered successfully"
+          },
+          "400": {
+            "description": "Invalid or expired activation code"
+          }
+        }
+      }
+    },
+    "/api/auth/resend-activation-code": {
+      "post": {
+        "summary": "Resend activation code",
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "New activation code sent to email"
+          },
+          "400": {
+            "description": "An activation code is still valid"
+          }
+        }
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "summary": "Log in a user",
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "userName": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Logged in successfully"
+          },
+          "400": {
+            "description": "Missing fields"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/auth/forgot-password": {
+      "post": {
+        "summary": "Request a password reset",
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "userName": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Verification code sent to email"
+          },
+          "400": {
+            "description": "Missing fields"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    },
+    "/api/auth/reset-password": {
+      "post": {
+        "summary": "Reset a user's password",
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "code": {
+                    "type": "string"
+                  },
+                  "newPassword": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Password updated successfully"
+          },
+          "400": {
+            "description": "Invalid or expired activation code"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    },
+    "/api/auth/logout": {
+      "post": {
+        "summary": "Log out a user",
+        "tags": [
+          "Auth"
+        ],
+        "responses": {
+          "200": {
+            "description": "Logged out successfully"
+          }
+        }
+      }
+    },
+    "/api/posts": {
+      "post": {
+        "summary": "Create a new post with an image",
+        "tags": [
+          "Posts"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "image": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "content": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Post created successfully"
+          },
+          "400": {
+            "description": "Invalid input"
+          }
+        }
+      },
+      "get": {
+        "summary": "Retrieve all posts",
+        "tags": [
+          "Posts"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Page number"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Number of posts per page"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of posts",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "content": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request"
+          }
+        }
+      }
+    },
+    "/api/requests": {
+      "post": {
+        "summary": "Create a new request",
+        "tags": [
+          "Requests"
+        ],
+        "description": "Add a new request to the system.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "phone": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "question": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Request created successfully."
+          },
+          "400": {
+            "description": "Missing required fields or validation error."
+          },
+          "500": {
+            "description": "Server error."
+          }
+        }
+      },
+      "get": {
+        "summary": "Fetch all requests",
+        "tags": [
+          "Requests"
+        ],
+        "description": "Retrieve all requests from the system with pagination.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "The page number for pagination."
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "The number of items per page."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of requests with pagination details."
+          },
+          "404": {
+            "description": "No requests found."
+          },
+          "500": {
+            "description": "Server error."
+          }
+        }
+      }
+    },
+    "/api/requests/untreated": {
+      "get": {
+        "summary": "Fetch all untreated requests",
+        "tags": [
+          "Requests"
+        ],
+        "description": "Retrieve all untreated requests from the system with pagination.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "The page number for pagination."
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "The number of items per page."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of untreated requests with pagination details."
+          },
+          "404": {
+            "description": "No untreated requests found."
+          },
+          "500": {
+            "description": "Server error."
+          }
+        }
+      }
+    },
+    "/api/requests/{id}": {
+      "put": {
+        "summary": "Mark a request as treated",
+        "tags": [
+          "Requests"
+        ],
+        "description": "Update the status of a request to treated.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the request to update."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "treated": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Request updated successfully."
+          },
+          "404": {
+            "description": "Request not found."
+          },
+          "500": {
+            "description": "Server error."
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete an existing request",
+        "tags": [
+          "Requests"
+        ],
+        "description": "Remove a request from the system.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the request to delete."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request deleted successfully."
+          },
+          "404": {
+            "description": "Request not found."
+          },
+          "500": {
+            "description": "Server error."
+          }
+        }
+      }
+    },
+    "/api/subscription/purchase": {
+      "post": {
+        "summary": "Purchase or upgrade a subscription",
+        "description": "Allows a user to purchase or upgrade their subscription. Requires authentication.",
+        "responses": {
+          "200": {
+            "description": "Subscription purchased or upgraded successfully."
+          }
+        }
+      }
+    },
+    "/api/tools": {
+      "get": {
+        "summary": "Fetch all tools",
+        "tags": [
+          "Tools"
+        ],
+        "description": "Retrieve all tools with optional pagination.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "The page number for pagination."
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "The number of items per page."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of tools with pagination details."
+          },
+          "400": {
+            "description": "No tools found."
+          },
+          "500": {
+            "description": "Server error."
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new tool",
+        "tags": [
+          "Tools"
+        ],
+        "description": "Add a new tool to the database.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "descriptionUnique": {
+                    "type": "string"
+                  },
+                  "logoOwners": {
+                    "type": "string"
+                  },
+                  "url": {
+                    "type": "string"
+                  },
+                  "isOpenSource": {
+                    "type": "boolean"
+                  },
+                  "sourceCodeUrl": {
+                    "type": "string"
+                  },
+                  "linkOurGuide": {
+                    "type": "string"
+                  },
+                  "linkOurVideo": {
+                    "type": "string"
+                  },
+                  "topic": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Tool created successfully."
+          },
+          "400": {
+            "description": "Missing required fields or validation error."
+          },
+          "500": {
+            "description": "Server error."
+          }
+        }
+      }
+    },
+    "/api/tools/{id}": {
+      "put": {
+        "summary": "Update an existing tool",
+        "tags": [
+          "Tools"
+        ],
+        "description": "Modify the details of an existing tool.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the tool to update."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "descriptionUnique": {
+                    "type": "string"
+                  },
+                  "logoOwners": {
+                    "type": "string"
+                  },
+                  "url": {
+                    "type": "string"
+                  },
+                  "isOpenSource": {
+                    "type": "boolean"
+                  },
+                  "sourceCodeUrl": {
+                    "type": "string"
+                  },
+                  "linkOurGuide": {
+                    "type": "string"
+                  },
+                  "linkOurVideo": {
+                    "type": "string"
+                  },
+                  "topic": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Tool updated successfully."
+          },
+          "400": {
+            "description": "Missing required fields or validation error."
+          },
+          "404": {
+            "description": "Tool not found."
+          },
+          "500": {
+            "description": "Server error."
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete an existing tool",
+        "tags": [
+          "Tools"
+        ],
+        "description": "Remove a tool from the database.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the tool to delete."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Tool deleted successfully."
+          },
+          "404": {
+            "description": "Tool not found."
+          },
+          "500": {
+            "description": "Server error."
+          }
+        }
+      }
+    },
+    "/api/topics": {
+      "get": {
+        "summary": "Retrieve all topics",
+        "tags": [
+          "Topics"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of topics retrieved successfully"
+          },
+          "400": {
+            "description": "No topics found"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new topic",
+        "tags": [
+          "Topics"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "category": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "content": {
+                    "type": "string"
+                  },
+                  "iconTools": {
+                    "type": "string"
+                  },
+                  "image": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Topic created successfully"
+          },
+          "400": {
+            "description": "Missing required fields"
+          },
+          "409": {
+            "description": "Duplicate category or default topic already exists"
+          }
+        }
+      }
+    },
+    "/api/topics/tools": {
+      "get": {
+        "summary": "Retrieve tools by topic",
+        "tags": [
+          "Topics"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Topic ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Tools retrieved successfully"
+          },
+          "404": {
+            "description": "Topic or tools not found"
+          }
+        }
+      }
+    },
+    "/api/topics/{id}": {
+      "put": {
+        "summary": "Update an existing topic",
+        "tags": [
+          "Topics"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Topic ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "category": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "content": {
+                    "type": "string"
+                  },
+                  "iconTools": {
+                    "type": "string"
+                  },
+                  "image": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Topic updated successfully"
+          },
+          "400": {
+            "description": "Missing required fields"
+          },
+          "404": {
+            "description": "Topic not found"
+          },
+          "409": {
+            "description": "Duplicate category"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a topic",
+        "tags": [
+          "Topics"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Topic ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Topic deleted successfully"
+          },
+          "404": {
+            "description": "Topic not found"
+          }
+        }
+      }
+    },
+    "/api/users/profile": {
+      "get": {
+        "summary": "Get user profile",
+        "tags": [
+          "Users"
+        ],
+        "responses": {
+          "200": {
+            "description": "User profile retrieved successfully"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update user profile",
+        "tags": [
+          "Users"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "phone": {
+                    "type": "string"
+                  },
+                  "currentPassword": {
+                    "type": "string"
+                  },
+                  "newPassword": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Profile updated successfully"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    },
+    "/api/users/provider-request": {
+      "post": {
+        "summary": "Request to become a provider",
+        "tags": [
+          "Users"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "logoUrl": {
+                    "type": "string"
+                  },
+                  "toolUrl": {
+                    "type": "string"
+                  },
+                  "serviceType": {
+                    "type": "string"
+                  },
+                  "signature": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Provider request submitted successfully"
+          },
+          "500": {
+            "description": "Error submitting provider request"
+          }
+        }
+      }
+    },
+    "/api/users/all": {
+      "get": {
+        "summary": "Get all users (admin only)",
+        "tags": [
+          "Users"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of all users"
+          },
+          "403": {
+            "description": "Access denied"
+          }
+        }
+      }
+    },
+    "/api/users/{userId}/toggle-active": {
+      "patch": {
+        "summary": "Toggle user active status (admin only)",
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "User ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User status toggled successfully"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    },
+    "/api/users/provider-requests": {
+      "get": {
+        "summary": "Get all provider requests (admin only)",
+        "tags": [
+          "Users"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of provider requests"
+          },
+          "403": {
+            "description": "Access denied"
+          }
+        }
+      }
+    },
+    "/api/users/provider-request/{id}/status": {
+      "patch": {
+        "summary": "Update provider request status (admin only)",
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Provider request ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "approved",
+                      "rejected"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Provider request status updated successfully"
+          },
+          "404": {
+            "description": "Provider request not found"
+          }
+        }
+      }
+    }
+  },
+  "components": {},
+  "tags": [
+    {
+      "name": "Auth",
+      "description": "Authentication and user management routes"
+    },
+    {
+      "name": "Posts",
+      "description": "API for managing posts"
+    },
+    {
+      "name": "Requests",
+      "description": "API for managing requests"
+    },
+    {
+      "name": "Tools",
+      "description": "API for managing tools"
+    },
+    {
+      "name": "Topics",
+      "description": "API for managing topics"
+    },
+    {
+      "name": "Users",
+      "description": "User management and profile routes"
+    }
+  ]
+}
