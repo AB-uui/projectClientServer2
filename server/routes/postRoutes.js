@@ -14,7 +14,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { createPost, getAllPosts } = require('../controllers/postController');
+const { createPost, getAllPosts, getPostById, updatePost, deletePost } = require('../controllers/postController');
 const upload = require('../middleware/imagesMiddleware'); // Middleware for file uploads
 
 /**
@@ -89,5 +89,92 @@ router.post('/', upload.single('image'), createPost);
  *         description: Invalid request
  */
 router.get('/', getAllPosts);
+
+/**
+ * @swagger
+ * /api/posts/{id}:
+ *   get:
+ *     summary: Retrieve a post by ID
+ *     tags: [Posts]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The post ID
+ *     responses:
+ *       200:
+ *         description: Post retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: string
+ *                 title:
+ *                   type: string
+ *                 content:
+ *                   type: string
+ *       404:
+ *         description: Post not found
+ */
+router.get('/:id', getPostById);
+
+/**
+ * @swagger
+ * /api/posts/{id}:
+ *   put:
+ *     summary: Update a post by ID
+ *     tags: [Posts]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The post ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               title:
+ *                 type: string
+ *               content:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Post updated successfully
+ *       400:
+ *         description: Invalid input
+ *       404:
+ *         description: Post not found
+ */
+router.put('/:id', updatePost);
+
+/**
+ * @swagger
+ * /api/posts/{id}:
+ *   delete:
+ *     summary: Delete a post by ID
+ *     tags: [Posts]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The post ID
+ *     responses:
+ *       200:
+ *         description: Post deleted successfully
+ *       404:
+ *         description: Post not found
+ */
+router.delete('/:id', deletePost);
 
 module.exports = router;
