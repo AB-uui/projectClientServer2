@@ -29,6 +29,8 @@ import Profile from './components/user/Profile';
 // Request Components
 import Requests from './components/requests/Requests';
 import ProviderRequest from './components/requests/ProviderRequest';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 function App() {
   return (

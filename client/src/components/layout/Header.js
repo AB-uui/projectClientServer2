@@ -22,70 +22,70 @@ function Header() {
     setShowProfileModal(true);
   };
 
-  return (
-    <header className="site-header">
-      <div className="logo">
-        <Link to="/">Logo</Link>
-      </div>
-      <nav className="main-nav">
-        <ul>
-          <li><Link to="/">דף הבית</Link></li>
-          <li><Link to="/tools">כלים</Link></li>
-          <li><Link to="/topics">נושאים</Link></li>
-          <li><Link to="/customer-form">יצירת טופס לקוח</Link></li>
-        </ul>
-      </nav>
-      <div className="user-controls">
+  return (<>
+    {/* <header className="navbar navbar-expand-lg navbar-light bg-light px-3"> */}
+    <header className="d-flex flex-wrap justify-content-center bg-light py-3 mb-4 border-bottom">
+        {/* לוגו בצד שמאל */}
+        <Link className="navbar-brand d-flex align-items-center" to="/">
+          <img
+            src="/MYLOGO.png"
+            alt="Logo"
+            width="40"
+            height="40"
+            className="d-inline-block align-text-top me-2"
+          />
+          <span className="fw-bold d-none d-md-inline">LEARNBUTTONS</span>
+        </Link>
+
+        {/* שורת חיפוש */}
+        <form className="d-flex mx-auto w-50">
+          <input
+            className="form-control me-2"
+            type="search"
+            placeholder="חפש כפתור, נושא או כלי..."
+            aria-label="Search"
+          />
+          <button className="btn btn-outline-primary" type="submit">חיפוש</button>
+        </form>
+      <div className="ms-auto">
         {!isLoggedIn ? (
-          <button onClick={handleLogin}>התחברות</button>
+          <button className="btn btn-primary" onClick={handleLogin}>התחברות</button>
         ) : (
           <>
-            <button onClick={handleProfile}>פרופיל</button>
-            <button onClick={handleLogout}>התנתקות</button>
+            <button className="btn btn-outline-secondary me-2" onClick={handleProfile}>פרופיל</button>
+            <button className="btn btn-danger" onClick={handleLogout}>התנתקות</button>
           </>
         )}
       </div>
 
+    </header>
+      {/* שורת תמונה מתחת לניווט */}
+      <div className="w-100">
+        <img
+          src="/banner-image.jpg" // החליפי לתמונה שבחרת
+          alt="Banner"
+          className="img-fluid w-100"
+          style={{ maxHeight: '300px', objectFit: 'cover' }}
+        />
+      </div>
+
       {/* Modals */}
       {showLoginModal && (
-        <div className="modal">
+        <div className="modal d-block">
           <Login onClose={() => setShowLoginModal(false)} />
         </div>
       )}
       
       {showProfileModal && (
-        <div className="modal">
+        <div className="modal d-block">
           <Profile onClose={() => setShowProfileModal(false)} />
         </div>
       )}
-    </header>
+    </>
   );
 }
 
 export default Header;
 
 
-// import React, { useState } from 'react';
-// import { Link } from 'react-router-dom';
 
-
-// function Header() {
-  
-
-//   return (
-//     <header className="site-header">
-//       <div className="logo">
-//         <Link to="/">Logo</Link>
-//       </div>
-//       <nav className="main-nav">
-//         <ul>
-//           <li><Link to="/">דף הבית</Link></li>
-         
-//         </ul>
-//       </nav>
-      
-//     </header>
-//   );
-// }
-
-// export default Header;
