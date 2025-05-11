@@ -21,6 +21,7 @@ const {
   forgotPassword,
   resetPassword,
   logout,
+  getMe
 } = require('../controllers/authController');
 
 /**
@@ -209,5 +210,19 @@ router.post('/reset-password', resetPassword);
  *         description: Logged out successfully
  */
 router.post('/logout', logout);
+/**
+ * @swagger
+ * /api/auth/me:
+ *   get:
+ *     summary: Get current user information
+ *     tags: [Auth]
+ *     responses:
+ *       200:
+ *         description: User information retrieved successfully
+ *       401:
+ *         description: Unauthorized
+ */
+router.get('/me', getMe);
+
 
 module.exports = router;
